@@ -1,5 +1,11 @@
 #include <ncurses.h>
 #include <string>
+#include <vector>
+
+struct Student {
+    std::string name;
+    int age;
+};
 
 void printMenu() {
     printw("Welcome to the Student Management System!\n\n");
@@ -13,6 +19,41 @@ void printMenu() {
     printw("Enter your choice: ");
 }
 
+void addStudentInformation(std::vector<Student>& students) {
+    clear();
+    printw("Add Student Information:\n\n");
+
+    Student student;
+
+    printw("Enter student name: ");
+    echo();
+    char name[256];
+    getstr(name);
+    noecho();
+    student.name = name;
+
+    printw("Enter student age: ");
+    scanw("%d", &student.age);
+
+    students.push_back(student);
+
+    printw("\nStudent information added successfully!\n");
+    getch(); // Wait for user input
+}
+
+void displayStudents(const std::vector<Student>& students) {
+    clear();
+    printw("Student Information:\n\n");
+
+    for (const auto& student : students) {
+        printw("Name: %s\n", student.name.c_str());
+        printw("Age: %d\n\n", student.age);
+    }
+
+    printw("Press any key to continue...\n");
+    getch(); // Wait for user input
+}
+
 int main() {
     initscr(); // Initialize ncurses
     cbreak(); // Disable line buffering
@@ -20,6 +61,7 @@ int main() {
 
     int choice;
     bool running = true;
+    std::vector<Student> students;
 
     while (running) {
         clear(); // Clear the screen
@@ -29,7 +71,7 @@ int main() {
 
         switch (choice) {
             case 1:
-                // Logic to add student information
+                addStudentInformation(students);
                 break;
 
             case 2:
