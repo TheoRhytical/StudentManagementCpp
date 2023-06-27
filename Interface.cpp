@@ -2,6 +2,11 @@
 #include <string>
 #include <vector>
 
+struct Student {
+    std::string name;
+    int age;
+};
+
 void printMenu() {
     printw("Welcome to the Student Management System!\n\n");
     printw("Menu:\n");
@@ -56,6 +61,7 @@ int main() {
 
     int choice;
     bool running = true;
+    std::vector<Student> students;
 
     while (running) {
         clear(); // Clear the screen
