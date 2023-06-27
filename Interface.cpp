@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <string>
+#include <vector>
 
 void printMenu() {
     printw("Welcome to the Student Management System!\n\n");
