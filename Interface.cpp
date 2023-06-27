@@ -333,7 +333,8 @@ int main() {
     cbreak(); // Disable line buffering
     noecho(); // Disable echoing of characters
 
-    int choice;
+    int choice = 0;
+    int highlight = 1; // Highlighted menu option
     bool running = true;
     std::vector<Student> students;
 
@@ -341,43 +342,114 @@ int main() {
         clear(); // Clear the screen
         printMenu(); // Display the menu
 
-        scanw("%d", &choice); // Get user input
+        int c = getch(); // Get user input
 
-        switch (choice) {
-            case 1:
-                addStudentInformation(students);
+        switch (c) {
+            case KEY_UP: // Up arrow key
+                if (highlight > 1) {
+                    highlight--;
+                }
                 break;
 
-            case 2:
-                addSubjectGrade(students);
+            case KEY_DOWN: // Down arrow key
+                if (highlight < 8) {
+                    highlight++;
+                }
                 break;
 
-            case 3:
-                 saveStudentDataToFile(students);
-                break;
-
-            case 4:
-                loadStudentDataFromFile(students);
-                break;
-
-            case 5:
-                 calculateStatistics(students);
-                break;
-
-            case 6:
-                searchStudent(students); 
-                break;
-
-            case 7:
-                running = false;
+            case 10: // Enter key
+                choice = highlight;
                 break;
 
             default:
-                printw("Invalid choice! Please try again.\n");
                 break;
         }
 
+        // Highlight the selected menu option
+        for (int i = 1; i <= 8; i++) {
+            if (i == highlight) {
+                attron(A_REVERSE);
+            }
+            printw("  "); // Indentation
+            switch (i) {
+                case 1:
+                    printw("1. Add student information\n");
+                    break;
+
+                case 2:
+                    printw("2. Add subject grade\n");
+                    break;
+
+                case 3:
+                    printw("3. Save student data to file\n");
+                    break;
+
+                case 4:
+                    printw("4. Load student data from file\n");
+                    break;
+
+                case 5:
+                    printw("5. Calculate statistics\n");
+                    break;
+
+                case 6:
+                    printw("6. Search student information\n");
+                    break;
+
+                case 7:
+                    printw("7. Display student information\n");
+                    break;
+
+                case 8:
+                    printw("8. Exit\n");
+                    break;
+            }
+            attroff(A_REVERSE);
+        }
+
         refresh(); // Update the screen
+
+        if (choice != 0) {
+            switch (choice) {
+                case 1:
+                    addStudentInformation(students);
+                    break;
+
+                case 2:
+                    addSubjectGrade(students);
+                    break;
+
+                case 3:
+                    saveStudentDataToFile(students);
+                    break;
+
+                case 4:
+                    loadStudentDataFromFile(students);
+                    break;
+
+                case 5:
+                    calculateStatistics(students);
+                    break;
+
+                case 6:
+                    searchStudent(students);
+                    break;
+
+                case 7:
+                    displayStudents(students);
+                    break;
+
+                case 8:
+                    running = false;
+                    break;
+
+                default:
+                    printw("Invalid choice! Please try again.\n");
+                    break;
+            }
+
+            choice = 0; // Reset the choice
+        }
     }
 
     endwin(); // Clean up ncurses
