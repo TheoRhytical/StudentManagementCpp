@@ -43,10 +43,10 @@ void addStudentInformation(std::vector<Student>& students) {
     printw("Enter student name: ");
     char name[256];
     getstr(name);
-    noecho();
     student.name = name;
 
     int age;
+    echo();
     printw("Enter student age: ");
     scanw("%d", &age);
     student.age = age;
@@ -55,14 +55,12 @@ void addStudentInformation(std::vector<Student>& students) {
     printw("Enter student gender: ");
     char gender[256];
     getstr(gender);
-    noecho();
     student.gender = gender;
 
     echo();
     printw("Enter student course: ");
     char course[256];
     getstr(course);
-    noecho();
     student.course = course;
 
     students.push_back(student);
@@ -87,14 +85,17 @@ void addSubjectGrade(std::vector<Student>& students) {
             found = true;
 
             char subject[256];
+            echo();
             printw("Enter subject name: ");
             getstr(subject);
 
             double grade;
+            echo();
             printw("Enter subject grade: ");
             scanw("%lf", &grade);
 
             double weight;
+            echo();
             printw("Enter subject weight: ");
             scanw("%lf", &weight);
 
