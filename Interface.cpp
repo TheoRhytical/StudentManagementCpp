@@ -19,19 +19,37 @@ struct Student {
     std::vector<Subject> subjects;
 };
 
-void printMenu() {
-    printw("Welcome to the Student Management System!\n\n");
-    printw("Menu:\n");
-    printw("1. Add student information\n");
-    printw("2. Add subject grade\n");
-    printw("3. Save student data to file\n");
-    printw("4. Load student data from file\n");
-    printw("5. Calculate statistics\n");
-    printw("6. Search student information\n");
-    printw("7. Display student information\n");
-    printw("8. Exit\n\n");
-    printw("Enter your choice: ");
+void printMenu(int highlight) {
+    clear();
+    start_color();
+
+    // Define color pairs
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);  // White text on black background
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);  // Green text on black background
+    init_pair(3, COLOR_CYAN, COLOR_BLACK);   // Cyan text on black background
+    init_pair(4, COLOR_RED, COLOR_BLACK);    // Red text on black background
+
+    attron(COLOR_PAIR(1) | A_BOLD); // Enable color and bold text
+    printw("**************************************************\n");
+    printw("*          Student Grade Management System       *\n");
+    printw("**************************************************\n\n");
+    attroff(COLOR_PAIR(1) | A_BOLD); // Disable color and bold text
+    printw("Menu:\n\n");
+    printw("%s1. Add student information\n", (highlight == 0) ? ">> " : "  ");
+    printw("%s2. Add subject grade\n", (highlight == 1) ? ">> " : "  ");
+    printw("%s3. Save student data to file\n", (highlight == 2) ? ">> " : "  ");
+    printw("%s4. Load student data from file\n", (highlight == 3) ? ">> " : "  ");
+    printw("%s5. Calculate statistics\n", (highlight == 4) ? ">> " : "  ");
+    printw("%s6. Search student information\n", (highlight == 5) ? ">> " : "  ");
+    printw("%s7. Display student information\n", (highlight == 6) ? ">> " : "  ");
+    printw("%s8. Exit\n\n", (highlight == 7) ? ">> " : "  ");
+    printw("\n");
+    attron(COLOR_PAIR(1) | A_BOLD); // Enable bold text
+    printw("**************************************************\n");
+    attroff(COLOR_PAIR(1) | A_BOLD); // Disable bold text
+    refresh();
 }
+
 
 void addStudentInformation(std::vector<Student>& students) {
     clear();
@@ -417,62 +435,60 @@ void displayStudentInformation(const std::vector<Student>& students) {
 }
 
 int main() {
-    initscr(); // Initialize the screen
-    keypad(stdscr, true); // Enable keyboard input
-    noecho(); // Disable automatic echoing of typed characters
-    curs_set(0); // Hide the cursor
+    initscr();            // Initialize ncurses
+    clear();              // Clear the screen
+    noecho();             // Turn off echoing of characters
+    cbreak();             // Disable line buffering, receive input character by character
+    keypad(stdscr, TRUE); // Enable special keys, such as arrow keys
 
+    int highlight = 0;
+    int choice;
+    bool running = true;
     std::vector<Student> students;
 
-    std::string choiceStr;
-    while (true) {
-        clear();
-        printMenu();
-        echo();
-        char input[256];
-        getstr(input);
-        noecho();
-        choiceStr = input;
+    while (running) {
+        printMenu(highlight);
+        choice = getch(); // Wait for user input
 
-    int choice;
-    try {
-        choice = std::stoi(choiceStr);
-        // Handle the choice...
-    } catch (const std::exception&) {
-        printw("Invalid choice! Please try again.\n");
-        getch(); // Wait for user input
-        continue;
-    }
+        switch (choice) {
+            case KEY_UP:
+                highlight = (highlight == 0) ? 7 : highlight - 1;
+                break;
+            case KEY_DOWN:
+                highlight = (highlight == 7) ? 0 : highlight + 1;
+                break;
+            case 10: // Enter key
+                switch (highlight) {
+                    case 0:
+                        addStudentInformation(students);
+                        break;
+                    case 1:
 
-    switch (choice) {
-            case 1:
-                addStudentInformation(students);
-                break;
-            case 2:
-                addSubjectGrade(students);
-                break;
-            case 3:
-                saveStudentDataToFile(students);
-                break;
-            case 4:
-                loadStudentDataFromFile(students);
-                break;
-            case 5:
-                calculateStatistics(students);
-                break;
-            case 6:
-                searchStudentInformation(students);
-                break;
-            case 7:
-                displayStudentInformation(students);
-                break;
-            case 8:
-                endwin(); // End the window
-                return 0;
-            default:
-                printw("Invalid choice! Please try again.\n");
-                getch(); // Wait for user input
+                        addSubjectGrade(students);
+                        break;
+                    case 2:
+                        saveStudentDataToFile(students);
+                        break;
+                    case 3:
+                        loadStudentDataFromFile(students);
+                        break;
+                    case 4:
+                        calculateStatistics(students);
+                        break;
+                    case 5:
+                        searchStudentInformation(students);
+                        break;
+                    case 6:
+                        displayStudentInformation(students);
+                        break;
+                    case 7:
+                        running = false;
+                        break;
+                }
                 break;
         }
     }
+
+    endwin(); // Clean up and restore the terminal settings
+    return 0;
 }
