@@ -35,13 +35,13 @@ void printMenu(int highlight) {
     printw("**************************************************\n\n");
     attroff(COLOR_PAIR(1) | A_BOLD); // Disable color and bold text
     printw("Menu:\n\n");
-    printw("%s1. Add student information\n", (highlight == 0) ? ">> " : "  ");
-    printw("%s2. Add subject grade\n", (highlight == 1) ? ">> " : "  ");
-    printw("%s3. Save student data to file\n", (highlight == 2) ? ">> " : "  ");
-    printw("%s4. Load student data from file\n", (highlight == 3) ? ">> " : "  ");
-    printw("%s5. Calculate statistics\n", (highlight == 4) ? ">> " : "  ");
-    printw("%s6. Search student information\n", (highlight == 5) ? ">> " : "  ");
-    printw("%s7. Display student information\n", (highlight == 6) ? ">> " : "  ");
+    printw("%s1. Add student information\n\n", (highlight == 0) ? ">> " : "  ");
+    printw("%s2. Add subject grade\n\n", (highlight == 1) ? ">> " : "  ");
+    printw("%s3. Save student data to file\n\n", (highlight == 2) ? ">> " : "  ");
+    printw("%s4. Load student data from file\n\n", (highlight == 3) ? ">> " : "  ");
+    printw("%s5. Calculate statistics\n\n", (highlight == 4) ? ">> " : "  ");
+    printw("%s6. Search student information\n\n", (highlight == 5) ? ">> " : "  ");
+    printw("%s7. Display student information\n\n", (highlight == 6) ? ">> " : "  ");
     printw("%s8. Exit\n\n", (highlight == 7) ? ">> " : "  ");
     printw("\n");
     attron(COLOR_PAIR(1) | A_BOLD); // Enable bold text
