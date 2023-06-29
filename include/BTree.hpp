@@ -3,17 +3,18 @@
 
 #include "../include/TreeNode.hpp"
 #include <iostream>
+#include <string>
 
 class BTree {
 private:
 	TreeNode *Root;
-	int T; // degree
+	int T, // degree
+		RowSize;
 
 public:
-	BTree(int temp) {
-		Root = NULL;
-		T = temp;
-	}
+	int Filenum;
+
+	BTree(int temp, int rowSize) : Root(NULL), T(temp), RowSize(rowSize) {}
 
 	// To optimize (prevent recursion)
 	void Traverse() {
@@ -22,11 +23,11 @@ public:
 	}
 
 	// To optimize (prevent recursion)
-	TreeNode *Search(int k) {
+	TreeNode *Search(Key k) {
 		return (Root == NULL) ? NULL : Root->Search(k);
 	}
 
-	void Insert(int k);
+	void Insert(std::string name, std::string content);
 };
 
 #endif
